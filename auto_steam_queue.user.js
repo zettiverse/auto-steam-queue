@@ -5,7 +5,7 @@
  // @include         http://store.steampowered.com/app/*
  // @include         http://store.steampowered.com/explore/*
  // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.6
+ // @version         1.7
  // @run-at          document-end
  // @grant           none
  // ==/UserScript==
@@ -79,7 +79,7 @@ function GM_main() {
                
             case 'app':
             default:
-                if ( $J('.error:contains("This item is currently unavailable in your region")') ) {
+                if ( $J('.error:contains("This item is currently unavailable in your region")').length ) {
                     var unavailable_app = window.location.pathname.split('/')[2];
                     $J.post("/app/7", { sessionid: g_sessionID, appid_to_clear_from_queue: unavailable_app })
                     .done( function ( data ) {
@@ -89,7 +89,7 @@ function GM_main() {
                         $J('.error').html( $J('.error').html() + '<br />(Could not remove from queue. Reload or try <a href="https://www.reddit.com/r/Steam/comments/3r2k4y/how_do_i_complete_discovery_queue_if_every_queue/cwkrrzf">removing manually.</a>)' );
                     } );
                 }
-                else {
+                else if ( $J('#next_in_queue_form').length ) {
                     $J('.queue_sub_text').text("Loading next in queue");
                     $J('#next_in_queue_form').submit();
                 }
