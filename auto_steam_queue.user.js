@@ -5,7 +5,7 @@
  // @include         http://store.steampowered.com/app/*
  // @include         http://store.steampowered.com/explore/*
  // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.1
+ // @version         1.2
  // @run-at          document-end
  // @grant           none
  // ==/UserScript==
@@ -27,16 +27,21 @@ function GM_main() {
         
         switch(path) {
             case 'explore':
-                $J.post( 'http://store.steampowered.com/explore/generatenewdiscoveryqueue', {
-                 sessionid: g_sessionID,
-                 queuetype: this.m_eQueueType,
-                }).done( function ( data ) {
-                window.location = 'http://store.steampowered.com/explore/next';
-                $J('#refresh_queue_btn').html("<span>Starting another queue.</span>");
-                }).fail( function() {
-                ShowAlertDialog( 'Start another queue >>', 'There was a problem saving your preferences.  Please try again later.' );
-                $J('#refresh_queue_btn').html("<span>Start another queue >></span>");
-                } );
+                if ( !$J('.discovery_queue_winter_sale_cards_header:contains("You\'ve completed your queue and have unlocked 3 event trading cards!")') ) {
+                    $J.post( 'http://store.steampowered.com/explore/generatenewdiscoveryqueue', {
+                     sessionid: g_sessionID,
+                     queuetype: this.m_eQueueType,
+                    }).done( function ( data ) {
+                    window.location = 'http://store.steampowered.com/explore/next';
+                    $J('#refresh_queue_btn').html("<span>Starting another queue.</span>");
+                    }).fail( function() {
+                    ShowAlertDialog( 'Start another queue >>', 'There was a problem saving your preferences.  Please try again later.' );
+                    $J('#refresh_queue_btn').html("<span>Start another queue >></span>");
+                    } );
+                }
+                else {
+                    $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
+                }
                 
                 break;
             
