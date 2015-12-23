@@ -5,7 +5,7 @@
  // @include         http://store.steampowered.com/app/*
  // @include         http://store.steampowered.com/explore/*
  // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.3
+ // @version         1.4
  // @run-at          document-end
  // @grant           none
  // ==/UserScript==
@@ -16,28 +16,51 @@ Thanks
 
 * http://stackoverflow.com/a/13734859
 * /u/curseknight ( Automatically load new queue, agecheck submissions )
+* /u/xPaw ( Run through queues via POSTs )
 
 */
 
 
 function GM_main() {
     window.onload = function () {
+
+        var GenerateQueue = function( queueNumber )
+        {
+            $J('.home_actions_ctn').css( 'visibility', 'visible' );
+            $J('.home_actions_ctn').text( 'Queue #' + ++queueNumber );
+            
+            $J('#refresh_queue_btn').html("<span>Running queue #" + queueNumber + ". . .</span>");
+            
+            jQuery.post( 'http://store.steampowered.com/explore/generatenewdiscoveryqueue', { sessionid: g_sessionID, queuetype: 0 } ).done( function( data )
+            {
+                var requests = [];
+                
+                for( var i = 0; i < data.queue.length; i++ )
+                {
+                    requests.push( jQuery.post( 'http://store.steampowered.com/app/10', { appid_to_clear_from_queue: data.queue[ i ], sessionid: g_sessionID } ) );
+                }
+                
+                jQuery.when.apply( jQuery, requests ).done( function()
+                {
+                    if( queueNumber < 3 )
+                    {
+                        GenerateQueue( queueNumber );
+                    }
+                    else
+                    {
+                        $J('#refresh_queue_btn').html("<span>Queues finished. Reloading.</span>");
+                        window.location.reload();
+                    }
+                } );
+            } );
+        };
     
         var path = window.location.pathname.split('/')[1];
         
         switch(path) {
             case 'explore':
                 if ( !$J('.discovery_queue_winter_sale_cards_header:contains("You\'ve completed your queue and have unlocked 3 event trading cards!")') ) {
-                    $J.post( 'http://store.steampowered.com/explore/generatenewdiscoveryqueue', {
-                     sessionid: g_sessionID,
-                     queuetype: this.m_eQueueType,
-                    }).done( function ( data ) {
-                    window.location = 'http://store.steampowered.com/explore/next';
-                    $J('#refresh_queue_btn').html("<span>Starting another queue.</span>");
-                    }).fail( function() {
-                    ShowAlertDialog( 'Start another queue >>', 'There was a problem saving your preferences.  Please try again later.' );
-                    $J('#refresh_queue_btn').html("<span>Start another queue >></span>");
-                    } );
+                    GenerateQueue(0);
                 }
                 else {
                     $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
