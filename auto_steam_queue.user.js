@@ -5,7 +5,7 @@
  // @include         http://store.steampowered.com/app/*
  // @include         http://store.steampowered.com/explore/*
  // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.4
+ // @version         1.5
  // @run-at          document-end
  // @grant           none
  // ==/UserScript==
@@ -59,7 +59,7 @@ function GM_main() {
         
         switch(path) {
             case 'explore':
-                if ( !$J('.discovery_queue_winter_sale_cards_header:contains("You\'ve completed your queue and have unlocked 3 event trading cards!")') ) {
+                if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")') ) {
                     GenerateQueue(0);
                 }
                 else {
