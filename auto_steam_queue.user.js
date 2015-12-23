@@ -5,7 +5,7 @@
  // @include         http://store.steampowered.com/app/*
  // @include         http://store.steampowered.com/explore/*
  // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.5
+ // @version         1.6
  // @run-at          document-end
  // @grant           none
  // ==/UserScript==
@@ -59,11 +59,13 @@ function GM_main() {
         
         switch(path) {
             case 'explore':
-                if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")') ) {
-                    GenerateQueue(0);
-                }
-                else {
-                    $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
+                if ( $J('.discovery_queue_winter_sale_cards_header').length ) {
+                    if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")') ) {
+                        GenerateQueue(0);
+                    }
+                    else {
+                        $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
+                    }
                 }
 
                 break;
