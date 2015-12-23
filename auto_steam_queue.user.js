@@ -1,14 +1,14 @@
- // ==UserScript==
- // @name            Auto Steam Discovery Queue
- // @namespace       http://steamcommunity.com/id/zetx/
- // @description     Go to next game queued as soon as page is done loading.
- // @include         http://store.steampowered.com/app/*
- // @include         http://store.steampowered.com/explore/*
- // @include         http://store.steampowered.com/agecheck/app/*
- // @version         1.7
- // @run-at          document-end
- // @grant           none
- // ==/UserScript==
+// ==UserScript==
+// @name            Auto Steam Discovery Queue
+// @namespace       http://steamcommunity.com/id/zetx/
+// @description     Go to next game queued as soon as page is done loading.
+// @include         http://store.steampowered.com/app/*
+// @include         http://store.steampowered.com/explore/*
+// @include         http://store.steampowered.com/agecheck/app/*
+// @version         1.8
+// @run-at          document-end
+// @grant           none
+// ==/UserScript==
 
 /*
 
@@ -60,7 +60,7 @@ function GM_main() {
         switch(path) {
             case 'explore':
                 if ( $J('.discovery_queue_winter_sale_cards_header').length ) {
-                    if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")') ) {
+                    if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")').length ) {
                         GenerateQueue(0);
                     }
                     else {
