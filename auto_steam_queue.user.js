@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/app/*
 // @include         http://store.steampowered.com/explore/*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         1.8
+// @version         1.9
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -23,6 +23,9 @@ Thanks
 
 function GM_main() {
     window.onload = function () {
+
+        var comeBackTomorrow = "Come back tomorrow to earn more cards by browsing your Discovery Queue!";
+        var notInRegion = "This item is currently unavailable in your region";
 
         var GenerateQueue = function( queueNumber )
         {
@@ -60,7 +63,7 @@ function GM_main() {
         switch(path) {
             case 'explore':
                 if ( $J('.discovery_queue_winter_sale_cards_header').length ) {
-                    if ( !$J('.discovery_queue_winter_sale_cards_header:contains("Come back tomorrow to earn more cards by browsing your Discovery Queue!")').length ) {
+                    if ( !$J('.discovery_queue_winter_sale_cards_header:contains(' + comeBackTomorrow + ')').length ) {
                         GenerateQueue(0);
                     }
                     else {
@@ -79,7 +82,7 @@ function GM_main() {
                
             case 'app':
             default:
-                if ( $J('.error:contains("This item is currently unavailable in your region")').length ) {
+                if ( $J('.error:contains(' + notInRegion + ')').length ) {
                     var unavailable_app = window.location.pathname.split('/')[2];
                     $J.post("/app/7", { sessionid: g_sessionID, appid_to_clear_from_queue: unavailable_app })
                     .done( function ( data ) {
