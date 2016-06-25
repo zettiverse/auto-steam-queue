@@ -68,6 +68,9 @@ function GM_main() {
                     }
                     else {
                         $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
+
+                        // Sometimes a generic, non-sale discovery queue banner is displayed instead of the sale one.
+                        document.querySelector('#discovery_queue_ctn').insertAdjacentHTML('beforeend', '(Script stopped)');
                     }
                 }
 
