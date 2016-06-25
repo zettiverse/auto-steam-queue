@@ -3,9 +3,9 @@
 // @namespace       http://steamcommunity.com/id/zetx/
 // @description     Go to next game queued as soon as page is done loading.
 // @include         http://store.steampowered.com/app/*
-// @include         http://store.steampowered.com/explore/*
+// @include         http://store.steampowered.com/explore*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         2.0
+// @version         2.02
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
