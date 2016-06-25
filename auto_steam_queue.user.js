@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/app/*
 // @include         http://store.steampowered.com/explore/*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         1.9
+// @version         2.0
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -82,7 +82,10 @@ function GM_main() {
                
             case 'app':
             default:
-                if ( $J('.error:contains(' + notInRegion + ')').length ) {
+                if ( window.location.pathname.split('/')[3] == 'agecheck' ) {
+                    document.querySelector('.btn_grey_white_innerfade.btn_medium').click();
+                }
+                else if ( $J('.error:contains(' + notInRegion + ')').length ) {
                     var unavailable_app = window.location.pathname.split('/')[2];
                     $J.post("/app/7", { sessionid: g_sessionID, appid_to_clear_from_queue: unavailable_app })
                     .done( function ( data ) {
