@@ -10,15 +10,7 @@
 // @grant           none
 // ==/UserScript==
 
-/*
-
-Thanks
-
-* http://stackoverflow.com/a/13734859
-* /u/curseknight ( Automatically load new queue, agecheck submissions )
-* /u/xPaw ( Run through queues via POSTs )
-
-*/
+// See README.md for shout-outs <3
 
 function auto_steam_queue() {
     var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
@@ -26,24 +18,75 @@ function auto_steam_queue() {
 
     var path = window.location.pathname.split('/')[1];
 
+    // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
-        var divTag = document.createElement('div');
-        divTag.setAttribute('class', 'discovery_queue_customize_ctn');
-        divTag.setAttribute('style', 'margin-top: 12px; margin-bottom: 12px !important;');
+        var autoQueueContainerDiv = document.createElement('div');
+        var autoQueueStatusDiv = document.createElement('div');
+        var autoQueueControlsDiv = document.createElement('div');
 
-        divTag.innerHTML = '<div id="auto_queue_status"></div><div id="auto_queue_controls"></div>';
+        autoQueueContainerDiv.setAttribute('id', 'auto_queue');
+        autoQueueContainerDiv.setAttribute('class', 'discovery_queue_customize_ctn');
+        autoQueueContainerDiv.setAttribute('style', 'margin-top: 12px; margin-bottom: 12px !important;');
 
-        document.getElementsByClassName('discovery_queue_apps')[0].getElementsByTagName('h2')[0].insertAdjacentHTML('afterend', divTag.outerHTML);
+        autoQueueStatusDiv.setAttribute('id', 'auto_queue_status');
+        autoQueueStatusDiv.setAttribute('style', 'display: inline');
+
+        autoQueueControlsDiv.setAttribute('id', 'auto_queue_controls');
+        autoQueueControlsDiv.setAttribute('style', 'float: right');
+
+        autoQueueContainerDiv.appendChild(autoQueueStatusDiv);
+        autoQueueContainerDiv.appendChild(autoQueueControlsDiv);
+
+        document.getElementsByClassName('discovery_queue_apps')[0].getElementsByTagName('h2')[0].insertAdjacentHTML('afterend', autoQueueContainerDiv.outerHTML);
     }
 
+    // Add the controls for running arbitrary queues
+    var populateControls = function() {
+        var controlsContainer = document.getElementById('auto_queue_controls');
+
+        var form = document.createElement('form');
+        var input = document.createElement('input');
+        var button = document.createElement('button');
+
+        form.setAttribute('id', 'auto_queue_form');
+        form.setAttribute('style', 'display: inline');
+
+        input.setAttribute('type', 'number');
+        input.setAttribute('min', '1');
+        input.setAttribute('step', '1');
+        input.setAttribute('id', 'queue_num');
+        input.setAttribute('placeholder', '# of queues to run');
+
+        button.setAttribute('type', 'submit')
+        button.textContent = 'Run';
+
+        form.appendChild(input);
+        form.appendChild(button);
+
+        controlsContainer.innerHTML = form.outerHTML;
+
+        document.getElementById('auto_queue_form').addEventListener('submit', completeNumQueues, false);
+    }
+
+    // On submit, do numQueues worth of queues
+    var completeNumQueues = function(event) {
+        event.preventDefault();
+
+        var numQueues = document.getElementById('queue_num').value;
+        
+        generateAndCompleteQueue(0, numQueues);
+    }
+
+    // Sets status updates for the control UI
     var setStatus = function(newStatus) {
         if (document.getElementById('auto_queue_status') === null) {
             return;
         }
 
-        document.getElementById('auto_queue_status').textContent = 'Auto Queue Status: ' + newStatus;
+        document.getElementById('auto_queue_status').textContent = 'Queue Status: ' + newStatus;
     }
 
+    // Tells Steam to generate a new queue then runs through the appids to clear 'em off the queue
     var generateAndCompleteQueue = function(currentQueueNum, maxQueueNum) {
         setStatus('Queue #' + ++currentQueueNum);
 
@@ -74,8 +117,10 @@ function auto_steam_queue() {
         });
     }
 
+    // Actions for /explore*
     var explorePageActions = function() {
         createUI();
+        populateControls();
 
         if ($J('.discovery_queue_winter_sale_cards_header').length) {
             if (!$J('.discovery_queue_winter_sale_cards_header:contains(' + comeBackTomorrow + ')').length) {
@@ -87,6 +132,7 @@ function auto_steam_queue() {
         }
     }
 
+    // Auto-submitted old-style age checks
     var ageCheckPageActions = function() {
         // http://store.steampowered.com/agecheck/app/*
 
@@ -95,6 +141,7 @@ function auto_steam_queue() {
         DoAgeGateSubmit();
     }
 
+    // Actions for /app* including new-style age checks
     var appPageActions = function() {
         if (window.location.pathname.split('/')[3] == 'agecheck') {
             document.getElementsByClassName('btn_grey_white_innerfade btn_medium')[0].click();
@@ -117,11 +164,11 @@ function auto_steam_queue() {
 
     if (path == 'explore') {
         explorePageActions();
-    } else if (path == 'agecheck') {
-        ageCheckPageActions();
     } else if (path == 'app') {
         appPageActions();
-    }
+    } else if (path == 'agecheck') {
+        ageCheckPageActions();
+    } 
 }
 
  addJS_Node(null, null, auto_steam_queue);
