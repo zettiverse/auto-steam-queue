@@ -20,6 +20,10 @@ function auto_steam_queue() {
 
     // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
+        if (!document.getElementsByClassName('discovery_queue_apps').length) {
+            return;
+        }
+
         var autoQueueContainerDiv = document.createElement('div');
         var autoQueueStatusDiv = document.createElement('div');
         var autoQueueControlsDiv = document.createElement('div');
