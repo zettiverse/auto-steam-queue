@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/app/*
 // @include         http://store.steampowered.com/explore*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         2.02
+// @version         2.03
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -70,7 +70,7 @@ function GM_main() {
                         $J('.subtext').html( $J('.subtext').html() + '<br />(Script stopped)' );
 
                         // Sometimes a generic, non-sale discovery queue banner is displayed instead of the sale one.
-                        document.querySelector('#discovery_queue_ctn').insertAdjacentHTML('beforeend', '(Script stopped)');
+                        document.getElementById('discovery_queue_ctn').insertAdjacentHTML('beforeend', '(Script stopped)');
                     }
                 }
 
@@ -86,7 +86,7 @@ function GM_main() {
             case 'app':
             default:
                 if ( window.location.pathname.split('/')[3] == 'agecheck' ) {
-                    document.querySelector('.btn_grey_white_innerfade.btn_medium').click();
+                    document.getElementsByClassName('btn_grey_white_innerfade btn_medium')[0].click();
                 }
                 else if ( $J('.error:contains(' + notInRegion + ')').length ) {
                     var unavailable_app = window.location.pathname.split('/')[2];
