@@ -50,6 +50,7 @@ function auto_steam_queue() {
 
         var form = document.createElement('form');
         var input = document.createElement('input');
+        var span = document.createElement('span');
         var button = document.createElement('button');
 
         form.setAttribute('id', 'auto_queue_form');
@@ -61,8 +62,11 @@ function auto_steam_queue() {
         input.setAttribute('id', 'queue_num');
         input.setAttribute('placeholder', '# of queues to run');
 
-        button.setAttribute('type', 'submit')
-        button.textContent = 'Run';
+        span.textContent = 'Run';
+
+        button.setAttribute('type', 'submit');
+        button.setAttribute('class', 'btnv6_blue_hoverfade btn_tiny');
+        button.appendChild(span);
 
         form.appendChild(input);
         form.appendChild(button);
@@ -114,6 +118,7 @@ function auto_steam_queue() {
                         generateAndCompleteQueue(currentQueueNum, maxQueueNum);
                     } else {
                         setStatus('Finished ' + currentQueueNum + ' queue(s).');
+                        UpdateNotificationCounts();
                     }
                 }, function(reason) {
                     console.log('Bad: ' + reason);
