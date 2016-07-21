@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/app/*
 // @include         http://store.steampowered.com/explore*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         3.0
+// @version         3.01
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
