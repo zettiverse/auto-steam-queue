@@ -131,12 +131,12 @@ function auto_steam_queue() {
 
         if ($J('.discovery_queue_winter_sale_cards_header').length) {
             if (!$J('.discovery_queue_winter_sale_cards_header:contains(' + comeBackTomorrow + ')').length) {
+                setStatus('Starting queues...');
                 generateAndCompleteQueue(0, 3);
             }
-            else {
-                setStatus('Stopped');
-            }
         }
+
+        setStatus('Waiting...');
     }
 
     // Auto-submitted old-style age checks
