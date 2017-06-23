@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/app/*
 // @include         http://store.steampowered.com/explore*
 // @include         http://store.steampowered.com/agecheck/app/*
-// @version         3.01
+// @version         4.00
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -13,7 +13,7 @@
 // See README.md for shout-outs <3
 
 function auto_steam_queue() {
-    var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
+    var comeBackTomorrow = 'You\'ve completed your queue and have unlocked';
     var notInRegion = 'This item is currently unavailable in your region';
 
     var path = window.location.pathname.split('/')[1];
@@ -163,10 +163,13 @@ function auto_steam_queue() {
             }).fail(function() {
                 $J('.error').html($J('.error').html() + '<br />(Could not remove from queue. Reload or try <a href="https://www.reddit.com/r/Steam/comments/3r2k4y/how_do_i_complete_discovery_queue_if_every_queue/cwkrrzf">removing manually.</a>)');
             });
-        } else if ( $J('#next_in_queue_form').length ) {
+        } 
+        /*
+        else if ( $J('#next_in_queue_form').length ) {
             $J('.queue_sub_text').text('Loading next in queue');
             $J('#next_in_queue_form').submit();
         }
+        */
     }
 
     if (path == 'explore') {
