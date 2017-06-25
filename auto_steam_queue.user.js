@@ -2,9 +2,9 @@
 // @name            Auto Steam Discovery Queue
 // @namespace       http://steamcommunity.com/id/zetx/
 // @description     Go to next game queued as soon as page is done loading.
-// @include         http://store.steampowered.com/app/*
-// @include         http://store.steampowered.com/explore*
-// @include         http://store.steampowered.com/agecheck/app/*
+// @include         http://store.steampowered.com/*app/*
+// @include         http://store.steampowered.com/*explore*
+// @include         http://store.steampowered.com/*agecheck/app/*
 // @version         4.00
 // @run-at          document-end
 // @grant           none
@@ -13,10 +13,10 @@
 // See README.md for shout-outs <3
 
 function auto_steam_queue() {
+
     var comeBackTomorrow = 'You\'ve completed your queue and have unlocked';
     var notInRegion = 'This item is currently unavailable in your region';
-
-    var path = window.location.pathname.split('/')[1];
+    var path = window.location.pathname.split('/').pop();
 
     // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
@@ -77,7 +77,7 @@ function auto_steam_queue() {
         event.preventDefault();
 
         var numQueues = document.getElementById('queue_num').value;
-        
+
         generateAndCompleteQueue(0, numQueues);
     }
 
@@ -110,14 +110,14 @@ function auto_steam_queue() {
             });
 
             Promise.all(appsCleared).then(function() {
-                    if (currentQueueNum < maxQueueNum) {
-                        generateAndCompleteQueue(currentQueueNum, maxQueueNum);
-                    } else {
-                        setStatus('Finished ' + currentQueueNum + ' queue(s).');
-                        UpdateNotificationCounts();
-                    }
-                }, function(reason) {
-                    console.log('Bad: ' + reason);
+                if (currentQueueNum < maxQueueNum) {
+                    generateAndCompleteQueue(currentQueueNum, maxQueueNum);
+                } else {
+                    setStatus('Finished ' + currentQueueNum + ' queue(s).');
+                    UpdateNotificationCounts();
+                }
+            }, function(reason) {
+                console.log('Bad: ' + reason);
             });
         });
     }
@@ -178,23 +178,24 @@ function auto_steam_queue() {
         appPageActions();
     } else if (path == 'agecheck') {
         ageCheckPageActions();
-    } 
+    }
+
 }
 
- addJS_Node(null, null, auto_steam_queue);
+addJS_Node(null, null, auto_steam_queue);
 
- //-- This is a standard-ish utility function:
- function addJS_Node(text, s_URL, funcToRun, runOnLoad) {
-   var D                                   = document;
-   var scriptNode                          = D.createElement ('script');
-   if (runOnLoad) {
-    scriptNode.addEventListener ("load", runOnLoad, false);
-   }
-   scriptNode.type                         = "text/javascript";
-   if (text)       scriptNode.textContent  = text;
-   if (s_URL)      scriptNode.src          = s_URL;
-   if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
+//-- This is a standard-ish utility function:
+function addJS_Node(text, s_URL, funcToRun, runOnLoad) {
+    var D                                   = document;
+    var scriptNode                          = D.createElement ('script');
+    if (runOnLoad) {
+        scriptNode.addEventListener ("load", runOnLoad, false);
+    }
+    scriptNode.type                         = "text/javascript";
+    if (text)       scriptNode.textContent  = text;
+    if (s_URL)      scriptNode.src          = s_URL;
+    if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
 
-   var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
-   targ.appendChild (scriptNode);
- }
+    var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
+    targ.appendChild (scriptNode);
+}
