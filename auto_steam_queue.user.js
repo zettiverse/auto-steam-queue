@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/*app/*
 // @include         http://store.steampowered.com/*explore*
 // @include         http://store.steampowered.com/*agecheck/app/*
-// @version         4.00
+// @version         4.01
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -14,7 +14,7 @@
 
 function auto_steam_queue() {
 
-    var comeBackTomorrow = 'You\'ve completed your queue and have unlocked';
+    var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
     var notInRegion = 'This item is currently unavailable in your region';
     var path = window.location.pathname.split('/').pop();
 
