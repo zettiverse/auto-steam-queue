@@ -20,6 +20,7 @@ Initially, I made a fairly simple user script that "clicked" through a discovery
 * /u/m2pt5 
 * /u/dmn002
 * /u/mszu
+* github/spookyUnknownUser
 
 ## History
 
