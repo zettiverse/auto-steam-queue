@@ -16,7 +16,7 @@ function auto_steam_queue() {
 
     var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
     var notInRegion = 'This item is currently unavailable in your region';
-    var path = window.location.pathname.split('/').pop();
+    var path = window.location.pathname.split('/')[1];
 
     // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
