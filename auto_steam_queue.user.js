@@ -5,7 +5,7 @@
 // @include         http://store.steampowered.com/*app/*
 // @include         http://store.steampowered.com/*explore*
 // @include         http://store.steampowered.com/*agecheck/app/*
-// @version         4.02
+// @version         4.03
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
@@ -16,7 +16,8 @@ function auto_steam_queue() {
 
     var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
     var notInRegion = 'This item is currently unavailable in your region';
-    var path = window.location.pathname.split('/')[1];
+    //var path = window.location.pathname.split('/')[1];
+    var path = window.location.pathname.match(/\/([\w]+?)(?:\/|$)/).pop()
 
     // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
