@@ -17,7 +17,7 @@ function auto_steam_queue() {
     var comeBackTomorrow = 'Come back tomorrow to earn more cards by browsing your Discovery Queue!';
     var notInRegion = 'This item is currently unavailable in your region';
     //var path = window.location.pathname.split('/')[1];
-    var path = window.location.pathname.match(/\/([\w]+?)(?:\/|$)/).pop()
+    var path = window.location.pathname.match(/\/([\w]+?)(?:\/|$)/).pop();
 
     // Create a 'control' UI for updates and running arbitrary queues
     var createUI = function() {
@@ -39,7 +39,7 @@ function auto_steam_queue() {
         autoQueueContainerDiv.appendChild(autoQueueControlsDiv);
 
         document.getElementsByClassName('discovery_queue_apps')[0].getElementsByTagName('h2')[0].insertAdjacentHTML('afterend', autoQueueContainerDiv.outerHTML);
-    }
+    };
 
     // Add the controls for running arbitrary queues
     var populateControls = function() {
@@ -71,7 +71,7 @@ function auto_steam_queue() {
         controlsContainer.innerHTML = form.outerHTML;
 
         document.getElementById('auto_queue_form').addEventListener('submit', completeNumQueues, false);
-    }
+    };
 
     // On submit, do numQueues worth of queues
     var completeNumQueues = function(event) {
@@ -80,7 +80,7 @@ function auto_steam_queue() {
         var numQueues = document.getElementById('queue_num').value;
 
         generateAndCompleteQueue(0, numQueues);
-    }
+    };
 
     // Sets status updates for the control UI
     var setStatus = function(newStatus) {
@@ -89,15 +89,15 @@ function auto_steam_queue() {
         }
 
         document.getElementById('auto_queue_status').textContent = 'Queue Status: ' + newStatus;
-    }
+    };
 
     // Tells Steam to generate a new queue then runs through the appids to clear 'em off the queue
     var generateAndCompleteQueue = function(currentQueueNum, maxQueueNum) {
-        setStatus('Queue #' + ++currentQueueNum);
+        setStatus('Queue #' + (++currentQueueNum));
 
         $J.post('http://store.steampowered.com/explore/generatenewdiscoveryqueue', {
-            sessionid: g_sessionID, 
-            queuetype: 0 
+            sessionid: g_sessionID,
+            queuetype: 0
         }).done(function(data) {
             var appsCleared = [];
 
@@ -121,7 +121,7 @@ function auto_steam_queue() {
                 console.log('Bad: ' + reason);
             });
         });
-    }
+    };
 
     // Actions for /explore*
     var explorePageActions = function() {
@@ -138,7 +138,7 @@ function auto_steam_queue() {
         }
 
         setStatus('Waiting...');
-    }
+    };
 
     // Auto-submitted old-style age checks
     var ageCheckPageActions = function() {
@@ -147,37 +147,37 @@ function auto_steam_queue() {
         $("span:contains('Enter')");
         $J('#ageYear').val(1915).trigger('change');
         DoAgeGateSubmit();
-    }
+    };
 
     // Actions for /app* including new-style age checks
     var appPageActions = function() {
-        if (window.location.pathname.split('/')[3] == 'agecheck') {
+        if (window.location.pathname.split('/')[3] === 'agecheck') {
             document.getElementsByClassName('btn_grey_white_innerfade btn_medium')[0].click();
         } else if ($J('.error:contains(' + notInRegion + ')').length) {
             var unavailable_app = window.location.pathname.split('/')[2];
-            $J.post('/app/7', { 
-                sessionid: g_sessionID, 
-                appid_to_clear_from_queue: unavailable_app 
+            $J.post('/app/7', {
+                sessionid: g_sessionID,
+                appid_to_clear_from_queue: unavailable_app
             }).done(function(data) {
                 window.location = 'http://store.steampowered.com/explore/next';
                 $J('.error').html($J('.error').html() + '<br />(Removing from queue)');
             }).fail(function() {
                 $J('.error').html($J('.error').html() + '<br />(Could not remove from queue. Reload or try <a href="https://www.reddit.com/r/Steam/comments/3r2k4y/how_do_i_complete_discovery_queue_if_every_queue/cwkrrzf">removing manually.</a>)');
             });
-        } 
-        /*
-        else if ( $J('#next_in_queue_form').length ) {
-            $J('.queue_sub_text').text('Loading next in queue');
-            $J('#next_in_queue_form').submit();
         }
-        */
-    }
+        /*
+         else if ( $J('#next_in_queue_form').length ) {
+             $J('.queue_sub_text').text('Loading next in queue');
+             $J('#next_in_queue_form').submit();
+         }
+         */
+    };
 
-    if (path == 'explore') {
+    if (path === 'explore') {
         explorePageActions();
-    } else if (path == 'app') {
+    } else if (path === 'app') {
         appPageActions();
-    } else if (path == 'agecheck') {
+    } else if (path === 'agecheck') {
         ageCheckPageActions();
     }
 
