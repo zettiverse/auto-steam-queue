@@ -22,6 +22,7 @@ Initially, I made a fairly simple user script that "clicked" through a discovery
 * /u/mszu
 * github/spookyUnknownUser
 * github/6apcyk
+* github/marvinlehmann
 
 ## History
 
