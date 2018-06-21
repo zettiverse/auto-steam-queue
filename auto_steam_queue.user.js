@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name            Auto Steam Discovery Queue
-// @namespace       http://steamcommunity.com/id/zetx/
+// @namespace       https://steamcommunity.com/id/zetx/
 // @description     Go to next game queued as soon as page is done loading.
-// @include         http://store.steampowered.com/*app/*
-// @include         http://store.steampowered.com/*explore*
-// @include         http://store.steampowered.com/*agecheck/app/*
+// @include         https://store.steampowered.com/*app/*
+// @include         https://store.steampowered.com/*explore*
+// @include         https://store.steampowered.com/*agecheck/app/*
 // @version         4.04
 // @run-at          document-end
 // @grant           none
@@ -95,7 +95,7 @@ function auto_steam_queue() {
     var generateAndCompleteQueue = function(currentQueueNum, maxQueueNum) {
         setStatus('Queue #' + (++currentQueueNum));
 
-        $J.post('http://store.steampowered.com/explore/generatenewdiscoveryqueue', {
+        $J.post('https://store.steampowered.com/explore/generatenewdiscoveryqueue', {
             sessionid: g_sessionID,
             queuetype: 0
         }).done(function(data) {
@@ -103,7 +103,7 @@ function auto_steam_queue() {
 
             data.queue.forEach(function(appId) {
                 appsCleared.push(
-                    $J.post('http://store.steampowered.com/app/60', {
+                    $J.post('https://store.steampowered.com/app/60', {
                         appid_to_clear_from_queue: appId,
                         sessionid: g_sessionID
                     })
@@ -142,7 +142,7 @@ function auto_steam_queue() {
 
     // Auto-submitted old-style age checks
     var ageCheckPageActions = function() {
-        // http://store.steampowered.com/agecheck/app/*
+        // https://store.steampowered.com/agecheck/app/*
 
         $("span:contains('Enter')");
         $J('#ageYear').val(1915).trigger('change');
@@ -159,7 +159,7 @@ function auto_steam_queue() {
                 sessionid: g_sessionID,
                 appid_to_clear_from_queue: unavailable_app
             }).done(function(data) {
-                window.location = 'http://store.steampowered.com/explore/next';
+                window.location = 'https://store.steampowered.com/explore/next';
                 $J('.error').html($J('.error').html() + '<br />(Removing from queue)');
             }).fail(function() {
                 $J('.error').html($J('.error').html() + '<br />(Could not remove from queue. Reload or try <a href="https://www.reddit.com/r/Steam/comments/3r2k4y/how_do_i_complete_discovery_queue_if_every_queue/cwkrrzf">removing manually.</a>)');
