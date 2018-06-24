@@ -6,6 +6,8 @@
 // @include         http*://store.steampowered.com/*explore*
 // @include         http*://store.steampowered.com/*agecheck/app/*
 // @version         4.05
+// @updateURL       https://github.com/3xz/auto-steam-queue/raw/master/auto_steam_queue.user.js
+// @downloadURL     https://github.com/3xz/auto-steam-queue/raw/master/auto_steam_queue.user.js
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
